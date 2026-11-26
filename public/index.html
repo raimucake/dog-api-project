@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Dog Gallery</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background: #fff8ed;
+      margin: 0;
+      padding: 40px 20px;
+      color: #444;
+    }
+
+    h1 {
+      color: #d97736;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 25px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px #00000015;
+    }
+
+    img {
+      width: 100%;
+      max-height: 400px;
+      object-fit: contain;
+      border-radius: 12px;
+      margin-top: 15px;
+    }
+
+    button {
+      background: #e58b43;
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 25px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background: #c96d2c;
+    }
+
+    #message {
+      color: #777;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h1>ランダム　🐶　犬のへや </h1>
+
+  <div class="container">
+    <h2>今日のわんこ！</h2>
+
+    <img id="dogImage" alt="ランダムな犬の画像">
+
+    <p id="message">画像を読み込んでいます...</p>
+
+    <button onclick="getDog()">ほかのわんこを見る</button>
+  </div>
+
+  <script>
+    async function getDog() {
+      const image = document.getElementById("dogImage");
+      const message = document.getElementById("message");
+
+      message.textContent = "読み込み中...";
+
+      try {
+        const response = await fetch("/api/dog");
+        if (!response.ok) {
+          throw new Error("画像の取得に失敗しました");
+        }
+
+        const data = await response.json();
+
+        image.src = data.message;
+        message.textContent = "癒されていってね！";
+      } catch (error) {
+        message.textContent = "画像を取得できませんでした。もう一度試してね。";
+      }
+    }
+
+    getDog();
+  </script>
+</body>
+</html>
+
